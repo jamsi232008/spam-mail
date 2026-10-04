@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: spam-mail-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn backend.app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
