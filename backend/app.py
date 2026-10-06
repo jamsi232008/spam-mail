@@ -1,11 +1,12 @@
 import os
 import sys
 from pathlib import Path
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 
 # Add backend directory to sys.path
 BASE_DIR = Path(__file__).resolve().parent
+FRONTEND_DIST = BASE_DIR.parent / "frontend" / "dist"
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
@@ -20,11 +21,11 @@ from ml.predict import load_model_and_vectorizer
 from services.email_service import load_demo_emails_into_system
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=None)
     app.config.from_object(Config)
 
-    # Enable CORS for frontend Vite dev server and production builds
-    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    # Enable CORS for frontend Vite dev server and external clients
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # Initialize Database
     init_db(app)
@@ -42,6 +43,23 @@ def create_app():
             'service': 'Smart Spam Shield Backend',
             'version': '1.0.0',
             'ml_model': 'Multinomial Naive Bayes'
+        }), 200
+
+    # Serve static frontend single-page application (SPA)
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_frontend(path):
+        if path.startswith('api/'):
+            return jsonify({'error': 'Endpoint not found'}), 404
+        target_path = FRONTEND_DIST / path
+        if path and target_path.exists() and target_path.is_file():
+            return send_from_directory(str(FRONTEND_DIST), path)
+        index_file = FRONTEND_DIST / 'index.html'
+        if index_file.exists():
+            return send_from_directory(str(FRONTEND_DIST), 'index.html')
+        return jsonify({
+            'status': 'backend_online',
+            'message': 'Smart Spam Shield Backend is running.'
         }), 200
 
     # Initialize model and initial seed data

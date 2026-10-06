@@ -18,7 +18,7 @@ class Config:
     DEMO_EMAILS_PATH = DATA_DIR / 'demo_emails.csv'
     
     # JWT Settings
-    JWT_SECRET = os.environ.get('JWT_SECRET', 'jwt-shield-token-secret-999')
+    JWT_SECRET = os.environ.get('JWT_SECRET', 'jwt-shield-token-secret-999-secure-hash-key-college-demo-2026')
     JWT_EXPIRATION_HOURS = 24
     
     # ML Threshold

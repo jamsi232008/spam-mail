@@ -6,3 +6,7 @@ node_modules/
 .idea/
 venv/
 .env
+*.log
+cloudflared.exe
+PUBLIC_LINK.txt
+cf_tunnel_temp.log

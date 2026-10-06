@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.spam_detector import analyze_email_content, record_detection_log, get_latest_model_metrics
 from models import DetectionLog
-from ml.train_model import train_and_save_model
 from ml.predict import load_model_and_vectorizer
 
 prediction_bp = Blueprint('prediction', __name__, url_prefix='/api')
@@ -73,6 +72,7 @@ def retrain_model():
     re-evaluates test metrics, and reloads in-memory models.
     """
     try:
+        from ml.train_model import train_and_save_model
         metrics = train_and_save_model()
         load_model_and_vectorizer(force_reload=True)
         return jsonify({

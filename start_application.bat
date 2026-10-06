@@ -22,14 +22,17 @@ echo.
 echo ===================================================================
 echo   [SUCCESS] Smart Spam Shield is now running!
 echo.
-echo   * Web Dashboard : http://localhost:5173
-echo   * Backend API   : http://127.0.0.1:5000/api
-echo   * Health Check  : http://127.0.0.1:5000/api/health
-echo   * Demo Login    : demo@spamshield.ai / password123
+echo   * Web App (Unified) : http://localhost:5000
+echo   * Dev UI (Vite)     : http://localhost:5173
+echo   * Backend Health    : http://127.0.0.1:5000/api/health
+echo   * Demo Login        : demo@spamshield.ai / password123
+echo.
+echo   * Public Share Link : Run 'share_public_link.bat' to share
+echo                         with anyone on any phone or device!
 echo ===================================================================
 echo.
 echo Opening dashboard in your default browser...
-start http://localhost:5173
+start http://localhost:5000
 
 echo.
 echo Keep this window open or minimize it.
